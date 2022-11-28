@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/egebagcivan.github.io/parkin-webadmin%20/static/css/main.f7136ece.css",
+    "main.js": "/egebagcivan.github.io/parkin-webadmin%20/static/js/main.253adeea.js",
+    "static/js/787.ca07c260.chunk.js": "/egebagcivan.github.io/parkin-webadmin%20/static/js/787.ca07c260.chunk.js",
+    "index.html": "/egebagcivan.github.io/parkin-webadmin%20/index.html",
+    "main.f7136ece.css.map": "/egebagcivan.github.io/parkin-webadmin%20/static/css/main.f7136ece.css.map",
+    "main.253adeea.js.map": "/egebagcivan.github.io/parkin-webadmin%20/static/js/main.253adeea.js.map",
+    "787.ca07c260.chunk.js.map": "/egebagcivan.github.io/parkin-webadmin%20/static/js/787.ca07c260.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f7136ece.css",
+    "static/js/main.253adeea.js"
+  ]
+}
