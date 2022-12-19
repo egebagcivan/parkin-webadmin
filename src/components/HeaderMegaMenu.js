@@ -163,18 +163,15 @@ export function HeaderMegaMenu() {
 
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
             <a href="/" className={classes.link}>
-              Ana Sayfa
+              Otoparklar
             </a>     
             <a href="/slider" className={classes.link}>
-              Slider
-            </a>
-            <a href="#" className={classes.link}>
-              Bildirim
+              Bannerlar
             </a>
           </Group>
 
           <Group className={classes.hiddenMobile}>
-          {user.name}
+          Hoşgeldin, {user.name}
                 <i className="ri-logout-circle-r-line" 
                  onClick={() => {
                     localStorage.removeItem("user");
@@ -192,37 +189,27 @@ export function HeaderMegaMenu() {
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title="ParkIn Admin"
         className={classes.hiddenDesktop}
         zIndex={1000000}
       >
         <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.fn.primaryColor()} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
+          <a href="/" className={classes.link}>
+              Otoparklar
+            </a> 
+            <a href="/slider" className={classes.link}>
+              Banner
+            </a>
 
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
           <Group position="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button onClick={() => {
+                    localStorage.removeItem("user");
+                    window.location.reload();
+                 }} variant="default">Logout</Button>
           </Group>
         </ScrollArea>
       </Drawer>

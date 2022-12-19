@@ -21,7 +21,7 @@ function Header() {
                 otoparkBul Admin
             </Text>
             <Group>
-                {user.name}
+                Hoşgeldin, {user.name}
                 <i className="ri-logout-circle-r-line" 
                  onClick={() => {
                     localStorage.removeItem("user");

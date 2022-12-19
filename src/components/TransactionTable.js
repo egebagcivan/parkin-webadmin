@@ -1,4 +1,4 @@
-import { Group, Table } from "@mantine/core";
+import { Group, Table, Badge } from "@mantine/core";
 import React from "react";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -19,7 +19,7 @@ function TransactionTable({
   const deleteTransaction = async (id) => {
     try {
       dispatch(ShowLoading());
-      await deleteDoc(doc(fireDb, `users/${user.id}/transactions`, id));
+      await deleteDoc(doc(fireDb, `vendors/`, id));
       dispatch(HideLoading());
       showNotification({
         title: "Transaction deleted",
@@ -32,17 +32,29 @@ function TransactionTable({
         title: "Error deleting transaction",
         color: "red",
       });
+      console.log(error);
     }
   };
+
+  //Aktif Pasif Badge
+  const activeBadge = <Badge variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }}>Aktif</Badge>
+  const passiveBadge = <Badge variant="gradient" gradient={{ from: 'orange', to: 'red' }}>Pasif</Badge>
+
+  function actPass(transaction){
+    if(transaction.active === true){
+      return activeBadge
+    }else{
+      return passiveBadge
+    }
+  }
 
   const getRows = transactions.map((transaction) => (
     <tr key={transaction.park_name}>
       <td>{transaction.park_name}</td>
-      <td>{transaction.park_description}</td>
-      <td>{transaction.location}</td>
-      <td>{moment(transaction.date).format("DD-MM-YYYY")}</td>
-      <td>{transaction.active}</td>
-      <td>{transaction.reference}</td>
+      <td>{transaction.email}</td>
+      <td>{transaction.manager_name}</td>
+      <td>{transaction.latitude}, {transaction.longitude}</td>
+      <td>{actPass(transaction)}</td>
       <td>
         <Group>
           <i
@@ -69,9 +81,9 @@ function TransactionTable({
       <thead>
         <tr>
           <th>Otopark Adı</th>
-          <th>Açıklama</th>
+          <th>Email</th>
+          <th>menejer Adı</th>
           <th>Konum</th>
-          <th>Eklenme Tarihi</th>
           <th>Aktif/Pasif</th>
         </tr>
       </thead>

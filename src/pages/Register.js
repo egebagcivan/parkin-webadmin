@@ -32,7 +32,7 @@ function Register() {
       // check if user already exists based on email
       dispatch(ShowLoading());
       const qry = query(
-        collection(fireDb, "users"),
+        collection(fireDb, "admins"),
         where("email", "==", registerForm.values.email)
       );
       const existingUsers = await getDocs(qry);
@@ -50,7 +50,7 @@ function Register() {
           registerForm.values.password,
           "sheymoney-lite"
         ).toString();
-        const response = await addDoc(collection(fireDb, "users"), {
+        const response = await addDoc(collection(fireDb, "admins"), {
           ...registerForm.values,
           password: encryptedPassword,
         });

@@ -32,19 +32,20 @@ function Login() {
     try {
        dispatch(ShowLoading())
       const qry = query(
-        collection(fireDb, "users"),
+        collection(fireDb, "admins"),
         where("email", "==", loginForm.values.email)
       );
       const existingUsers = await getDocs(qry);
       if (existingUsers.size > 0) {
+        const permissions = existingUsers.docs[0].data().permission;
         // decrypt password
         const decryptedPassword = cryptojs.AES.decrypt(
           existingUsers.docs[0].data().password,
           "sheymoney-lite"
         ).toString(cryptojs.enc.Utf8);
-        if (decryptedPassword === loginForm.values.password) {
+        if (decryptedPassword === loginForm.values.password && permissions === 1) {
           showNotification({
-            title: "Login successful",
+            title: "Giriş Başarılı",
             color: "green",
           });
           const dataToPutInLocalStorage = {
@@ -54,7 +55,13 @@ function Login() {
           };
           localStorage.setItem("user", JSON.stringify(dataToPutInLocalStorage));
           navigate("/");
-        } else {
+        } else if(decryptedPassword === loginForm.values.password && permissions === 0) { 
+          showNotification({
+            title: "You don't have permission to login",
+            color: "red",
+          });
+        }
+        else {
           showNotification({
             title: "Invalid credentials",
             color: "red",

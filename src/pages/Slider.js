@@ -41,30 +41,30 @@ function Slider() {
     if (filters.frequency !== "custom-range") {
       if (filters.frequency === "7") {
         tempConditions.push(
-          where("date", ">=", moment().subtract(7, "days").format("YYYY-MM-DD"))
+          where("added_date", ">=", moment().subtract(7, "days").format("DD-MM-YYYY hh:MM:ss"))
         );
       } else if (filters.frequency === "30") {
         tempConditions.push(
           where(
-            "date",
+            "added_date",
             ">=",
-            moment().subtract(30, "days").format("YYYY-MM-DD")
+            moment().subtract(30, "days").format("DD-MM-YYYY hh:MM:ss")
           )
         );
       } else if (filters.frequency === "365") {
         tempConditions.push(
           where(
-            "date",
+            "added_date",
             ">=",
-            moment().subtract(365, "days").format("YYYY-MM-DD")
+            moment().subtract(365, "days").format("DD-MM-YYYY hh:MM:ss")
           )
         );
       }
     } else {
-      const fromDate = moment(filters.dateRange[0]).format("YYYY-MM-DD");
-      const toDate = moment(filters.dateRange[1]).format("YYYY-MM-DD");
-      tempConditions.push(where("date", ">=", fromDate));
-      tempConditions.push(where("date", "<=", toDate));
+      const fromDate = moment(filters.dateRange[0]).format("DD-MM-YYYY hh:MM:ss");
+      const toDate = moment(filters.dateRange[1]).format("DD-MM-YYYY hh:MM:ss");
+      tempConditions.push(where("added_date", ">=", fromDate));
+      tempConditions.push(where("added_date", "<=", toDate));
     }
     return tempConditions;
   };
@@ -74,9 +74,7 @@ function Slider() {
       const whereConditions = getWhereConditions();
       dispatch(ShowLoading());
       const qry = query(
-        collection(fireDb, `sliders`),
-        orderBy("date", "desc"),
-        ...whereConditions
+        collection(fireDb, `banners`),
       );
 
       const response = await getDocs(qry);
@@ -84,7 +82,6 @@ function Slider() {
         id: doc.id,
         ...doc.data(),
       }));
-
       setSliders(data);
 
       dispatch(HideLoading());
@@ -116,7 +113,7 @@ function Slider() {
       pl={15}
       fw={700}
     >
-      Slider
+      Bannerlar
     </Text>
         <Card>
           <div className="flex justify-between items-end">
@@ -135,7 +132,7 @@ function Slider() {
                   setFormMode("add");
                 }}
               >
-                Slider Ekle
+                Banner Ekle
               </Button>
             </Group>
           </div>
@@ -155,7 +152,7 @@ function Slider() {
 
       <Modal
         size="lg"
-        title={formMode === "add" ? "Add Transaction" : "Edit Transaction"}
+        title={formMode === "add" ? "Slider Ekle" : "Slider Düzenle"}
         opened={showForm}
         onClose={() => setShowForm(false)}
         centered
