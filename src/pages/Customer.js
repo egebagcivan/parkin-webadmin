@@ -7,10 +7,11 @@ import { fireDb } from "../firebaseConfig";
 import { showNotification } from "@mantine/notifications";
 import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import TransactionTable from "../components/TransactionTable";
 import moment from "moment";
 import Analytics from "../components/Analytics";
 import { useNavigate } from "react-router-dom";
+import CustomerTable from "../components/CustomerTable";
+import CustomerForm from "../components/CustomerForm";
 
 
 function Customer() {
@@ -28,8 +29,8 @@ function Customer() {
     try {
       dispatch(ShowLoading());
       const qry = query(
-        collection(fireDb, `vendor`),
-        orderBy("parkName", "desc"),
+        collection(fireDb, `customer`),
+        orderBy("nameSurname", "desc"),
       );
 
       const response = await getDocs(qry);
@@ -71,27 +72,12 @@ function Customer() {
           pl={15}
           fw={700}
         >
-          Otoparklar
+          Müşteriler
         </Text>
         <Card>
-          <div className="flex justify-between items-end">
-            <div>
-            </div>
-            <Group>
-              <Button
-                color="green"
-                onClick={() => {
-                  setShowForm(true);
-                  setFormMode("add");
-                }}
-              >
-                Otopark Ekle
-              </Button>
-            </Group>
-          </div>
           <Divider mt={20} />
           {view === "table" && (
-            <TransactionTable
+            <CustomerTable
               transactions={transactions}
               setSelectedTransaction={setSelectedTransaction}
               setFormMode={setFormMode}
@@ -106,12 +92,12 @@ function Customer() {
 
       <Modal
         size="lg"
-        title={formMode === "add" ? "Vendor Ekle" : "Vendor Düzenle"}
+        title={formMode === "add" ? "Vendor Ekle" : "Park Geçmişi"}
         opened={showForm}
         onClose={() => setShowForm(false)}
         centered
       >
-        <TransactionForm
+        <CustomerForm
           formMode={formMode}
           setFormMode={setFormMode}
           setShowForm={setShowForm}

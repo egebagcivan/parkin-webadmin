@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 import { useForm } from "@mantine/form";
-import { Select, Stack, TextInput, Button, Group, Input, PasswordInput } from "@mantine/core";
+import { Select, Stack, TextInput, Button, Group, Input, PasswordInput, Card, Image, Text, Badge } from "@mantine/core";
 import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fireDb } from "../firebaseConfig";
 import { showNotification } from "@mantine/notifications";
 import { HideLoading, ShowLoading } from "../redux/alertsSlice";
-function TransactionForm({
+function CustomerForm({
   formMode,
   setFormMode,
   setShowForm,
@@ -120,79 +120,33 @@ function TransactionForm({
 
   return (
     <div>
-      <form action="" onSubmit={onSubmit}>
-        <Stack>
-          <TextInput required
-            name="park_name"
-            label="Otopark Adı"
-            placeholder="Otopark Adını girin"
-            {...trasactionForm.getInputProps("park_name")}
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card.Section>
+          <Image
+            src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+            height={160}
+            alt="Norway"
           />
-          <TextInput required
-            name="park_name"
-            label="E-Posta"
-            placeholder="ornek@ornek.com"
-            {...trasactionForm.getInputProps("email")}
-          />
-          <TextInput required
-            name="park_name"
-            label="Menejer Adı"
-            placeholder="Menejer Adı Girin"
-            {...trasactionForm.getInputProps("manager_name")}
-          />
-          <TextInput required
-            name="IBAN"
-            label="IBAN"
-            placeholder="TRXXXX"
-            {...trasactionForm.getInputProps("iban")}
-          />
-          <TextInput required
-            name="VKN"
-            label="VKN"
-            placeholder="VKN"
-            {...trasactionForm.getInputProps("vkn")}
-          />
-          <TextInput required
-            name="Phone"
-            label="Phone"
-            placeholder="Phone"
-            {...trasactionForm.getInputProps("phone")}
-          />
-          <Group position="apart" grow>
-            <Input required
-              name="location"
-              label="Latitude"
-              placeholder="Latitude"
-              defaultValue={trasactionForm.values.latitude}
-              onChange={(e) => { trasactionForm.setFieldValue('latitude', parseFloat(e.target.value)) }}
-            />
-            <Input required
-              name="location"
-              label="Longitude"
-              defaultValue={trasactionForm.values.longitude}
-              onChange={(e) => { trasactionForm.setFieldValue('longitude', parseFloat(e.target.value)) }}
-              placeholder="Longitude"
-            />
-          </Group>
-          <Group position="apart" grow>
-            <Select required
-              name="active"
-              label="Aktif/Pasif"
-              placeholder="Aktif/Pasif"
-              data={[
-                { label: "Aktif", value: true },
-                { label: "Pasif", value: false },
-              ]}
-              {...trasactionForm.getInputProps("active")}
-            />
-          </Group>
-          <Button color="cyan" type="submit">
-            {formMode === "add" ? "Otoparkı Ekle" : "Otoparkı Güncelle"}
-          </Button>
-        </Stack>
-      </form>
+        </Card.Section>
+
+        <Group position="apart" mt="md" mb="xs">
+          <Text weight={500}>Norway Fjord Adventures</Text>
+          <Badge color="pink" variant="light">
+            On Sale
+          </Badge>
+        </Group>
+
+        <Text size="sm" color="dimmed">
+          With Fjord Tours you can explore more of the magical fjord landscapes with tours and
+          activities on and around the fjords of Norway
+        </Text>
+
+        <Button variant="light" color="blue" fullWidth mt="md" radius="md">
+          Book classic tour now
+        </Button>
+      </Card>
     </div>
   );
 }
 
-export default TransactionForm;
+export default CustomerForm;
