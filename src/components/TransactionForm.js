@@ -38,7 +38,7 @@ function TransactionForm({
     .then(async (userCredential) => {
       // Signed in 
       const user = userCredential.user;
-      await setDoc(doc(fireDb, "vendors", user.uid), {
+      await setDoc(doc(fireDb, "vendor", user.uid), {
         vendor_id: user.uid,
         email: trasactionForm.values.email,
         iban: trasactionForm.values.iban,
@@ -72,7 +72,7 @@ function TransactionForm({
       dispatch(ShowLoading());
       if(formMode === "edit") 
       {
-        const upRef = doc(fireDb, "vendors", transactionData.id);
+        const upRef = doc(fireDb, "vendor", transactionData.id);
         await updateDoc(upRef, {
           email: trasactionForm.values.email,
           iban: trasactionForm.values.iban,
@@ -123,37 +123,37 @@ function TransactionForm({
     <div>
       <form action="" onSubmit={onSubmit}>
         <Stack>
-          <TextInput
+          <TextInput required
             name="park_name"
             label="Otopark Adı"
             placeholder="Otopark Adını girin"
             {...trasactionForm.getInputProps("park_name")}
           />
-          <TextInput
+          <TextInput required
             name="park_name"
             label="E-Posta"
             placeholder="ornek@ornek.com"
             {...trasactionForm.getInputProps("email")}
           />
-          <TextInput
+          <TextInput required
             name="park_name"
             label="Menejer Adı"
             placeholder="Menejer Adı Girin"
             {...trasactionForm.getInputProps("manager_name")}
           />
-          <TextInput
+          <TextInput required
             name="IBAN"
             label="IBAN"
             placeholder="TRXXXX"
             {...trasactionForm.getInputProps("iban")}
           />
-          <TextInput
+          <TextInput required
             name="VKN"
             label="VKN"
             placeholder="VKN"
             {...trasactionForm.getInputProps("vkn")}
           />
-            <TextInput
+            <TextInput required
             name="Phone"
             label="Phone"
             placeholder="Phone"
@@ -176,7 +176,7 @@ function TransactionForm({
           />
           </Group>
           <Group position="apart" grow>
-            <Select
+            <Select required
               name="active"
               label="Aktif/Pasif"
               placeholder="Aktif/Pasif"

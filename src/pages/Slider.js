@@ -74,7 +74,7 @@ function Slider() {
       const whereConditions = getWhereConditions();
       dispatch(ShowLoading());
       const qry = query(
-        collection(fireDb, `banners`),
+        collection(fireDb, `banner`),
       );
 
       const response = await getDocs(qry);

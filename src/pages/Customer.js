@@ -13,7 +13,7 @@ import Analytics from "../components/Analytics";
 import { useNavigate } from "react-router-dom";
 
 
-function Home() {
+function Customer() {
   const navigate = useNavigate();
 
   const [view, setView] = React.useState("table");
@@ -37,7 +37,7 @@ function Home() {
         id: doc.id,
         ...doc.data(),
       }));
-      
+
       setTransactions(data);
 
       dispatch(HideLoading());
@@ -57,22 +57,22 @@ function Home() {
 
   return (
     <Box
-     
-    >
-    <HeaderMegaMenu/> 
 
-        <div className="container">
-        <Text
-      variant="gradient"
-      gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-      sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
-      ta="center"
-      fz="xl"
-      pl={15}
-      fw={700}
     >
-      Otoparklar
-    </Text>
+      <HeaderMegaMenu />
+
+      <div className="container">
+        <Text
+          variant="gradient"
+          gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+          sx={{ fontFamily: 'Greycliff CF, sans-serif' }}
+          ta="center"
+          fz="xl"
+          pl={15}
+          fw={700}
+        >
+          Otoparklar
+        </Text>
         <Card>
           <div className="flex justify-between items-end">
             <div>
@@ -89,7 +89,7 @@ function Home() {
               </Button>
             </Group>
           </div>
-          <Divider mt={20}/>
+          <Divider mt={20} />
           {view === "table" && (
             <TransactionTable
               transactions={transactions}
@@ -102,7 +102,7 @@ function Home() {
           {view === "analytics" && <Analytics transactions={transactions} />}
         </Card>
       </div>
-      
+
 
       <Modal
         size="lg"
@@ -124,4 +124,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Customer;

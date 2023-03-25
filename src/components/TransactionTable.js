@@ -19,7 +19,7 @@ function TransactionTable({
   const deleteTransaction = async (id) => {
     try {
       dispatch(ShowLoading());
-      await deleteDoc(doc(fireDb, `vendors/`, id));
+      await deleteDoc(doc(fireDb, `vendor/`, id));
       dispatch(HideLoading());
       showNotification({
         title: "Transaction deleted",
@@ -47,10 +47,9 @@ function TransactionTable({
       return passiveBadge
     }
   }
-
   const getRows = transactions.map((transaction) => (
-    <tr key={transaction.park_name}>
-      <td>{transaction.park_name}</td>
+    <tr key={transaction.parkName}>
+      <td>{transaction.parkName}</td>
       <td>{transaction.email}</td>
       <td>{transaction.manager_name}</td>
       <td>{transaction.latitude}, {transaction.longitude}</td>

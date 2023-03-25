@@ -72,9 +72,8 @@ const useStyles = createStyles((theme) => ({
     marginTop: theme.spacing.sm,
     padding: `${theme.spacing.md}px ${theme.spacing.md * 2}px`,
     paddingBottom: theme.spacing.xl,
-    borderTop: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
+      }`,
   },
 
   hiddenMobile: {
@@ -152,32 +151,38 @@ export function HeaderMegaMenu() {
     <Box>
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: '100%' }}>
-        <Text
-               size='xl'
-               color="teal"
-               variant="text"
-               weight="bold"
-             >
-                ParkIn Admin
-            </Text>
+          <Text
+            size='xl'
+            color="teal"
+            variant="text"
+            weight="bold"
+          >
+            ParkIn Admin
+          </Text>
 
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+            <a href="/dashboard" className={classes.link}>
+              DashBoard
+            </a>
             <a href="/" className={classes.link}>
               Otoparklar
-            </a>     
+            </a>
+            <a href="/customer" className={classes.link}>
+              Müşteriler
+            </a>
             <a href="/slider" className={classes.link}>
               Bannerlar
             </a>
           </Group>
 
           <Group className={classes.hiddenMobile}>
-          Hoşgeldin, {user.name}
-                <i className="ri-logout-circle-r-line" 
-                 onClick={() => {
-                    localStorage.removeItem("user");
-                    window.location.reload();
-                 }}
-                ></i>
+            Hoşgeldin, {user.name}
+            <i className="ri-logout-circle-r-line"
+              onClick={() => {
+                localStorage.removeItem("user");
+                window.location.reload();
+              }}
+            ></i>
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
@@ -197,19 +202,22 @@ export function HeaderMegaMenu() {
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
           <a href="/" className={classes.link}>
-              Otoparklar
-            </a> 
-            <a href="/slider" className={classes.link}>
-              Banner
-            </a>
+            Otoparklar
+          </a>
+          <a href="/customer" className={classes.link}>
+            Müşteriler
+          </a>
+          <a href="/slider" className={classes.link}>
+            Banner
+          </a>
 
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
           <Group position="center" grow pb="xl" px="md">
             <Button onClick={() => {
-                    localStorage.removeItem("user");
-                    window.location.reload();
-                 }} variant="default">Logout</Button>
+              localStorage.removeItem("user");
+              window.location.reload();
+            }} variant="default">Logout</Button>
           </Group>
         </ScrollArea>
       </Drawer>

@@ -18,15 +18,15 @@ function SliderForm({
 }) {
   const dispatch = useDispatch();
 
-  const slider = JSON.parse(localStorage.getItem("banners"));
+  const slider = JSON.parse(localStorage.getItem("banner"));
 
 
   const sliderForm = useForm({
     initialValues: {
       active: null,
-      banner_url: "",
-      added_date: null,
-      finish_date: null,
+      bannerURL: "",
+      addedDate: null,
+      validationDate: null,
     },
   });
 
@@ -38,20 +38,20 @@ function SliderForm({
       if(formMode === "add") 
       {
         const addc = await addDoc(
-          collection(fireDb, `banners`),
+          collection(fireDb, `banner`),
           {
             active: sliderForm.values.active,
-            banner_url: sliderForm.values.banner_url,
-            added_date: sliderForm.values.added_date,
-            finish_date: sliderForm.values.finish_date,
+            bannerURL: sliderForm.values.bannerURL,
+            addedDate: sliderForm.values.addedDate,
+            validationDate: sliderForm.values.validationDate,
           });
 
-          await updateDoc(doc(fireDb, `banners`, addc.id), {
-            banner_id: addc.id,
+          await updateDoc(doc(fireDb, `banner`, addc.id), {
+            id: addc.id,
           });
       }else{
         await setDoc(
-          doc(fireDb, `banners`, sliderData.id),
+          doc(fireDb, `banner`, sliderData.id),
           sliderForm.values,
         );
       }
@@ -76,24 +76,24 @@ function SliderForm({
   useEffect(() => {
     if (formMode === "edit") {
       sliderForm.setValues(sliderData);
-      sliderForm.setFieldValue('added_date', new Date(moment(sliderData.added_date.toDate().toISOString()).format('DD-MM-YYYY')));
-      sliderForm.setFieldValue('finish_date', new Date(moment(sliderData.finish_date.toDate().toISOString()).format('DD-MM-YYYY')));
+      sliderForm.setFieldValue('addedDate', new Date(moment(sliderData.addedDate.toDate().toISOString()).format('DD-MM-YYYY')));
+      sliderForm.setFieldValue('validationDate', new Date(moment(sliderData.validationDate.toDate().toISOString()).format('DD-MM-YYYY')));
     } else {
       sliderForm.setValues()
     }
   }, [sliderData]);
 
   function hasVal(sliderData){
-    if(sliderData.added_date != null){
-      return moment(sliderData.added_date.toDate()).format('YYYY-MM-DD')
+    if(sliderData.addedDate != null){
+      return moment(sliderData.addedDate.toDate()).format('YYYY-MM-DD')
     }else{
       return null;
     }
   }
 
   function hasValFinish(sliderData){
-    if(sliderData.finish_date != null){
-      return moment(sliderData.finish_date.toDate()).format('YYYY-MM-DD')
+    if(sliderData.validationDate != null){
+      return moment(sliderData.validationDate.toDate()).format('YYYY-MM-DD')
     }else{
       return null;
     }
@@ -128,13 +128,13 @@ function SliderForm({
 
       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
         console.log('File available at', downloadURL);
-        sliderForm.setFieldValue('banner_url', downloadURL);
-        const imageStoreRef = doc(fireDb, `banners`, sliderData.id);
+        sliderForm.setFieldValue('bannerURL', downloadURL);
+        const imageStoreRef = doc(fireDb, `banner`, sliderData.id);
         if(formMode === "add") 
       {
         addDoc(
           imageStoreRef, {
-            banner_url: downloadURL,
+            bannerURL: downloadURL,
           }
         );
       }
@@ -144,11 +144,13 @@ function SliderForm({
   
   const isDisabled = (props) => { 
     let process = uploadProgress;
-    if(process !== 100){
-      return true;
-    } else {
-      return false;
-    }
+    if (formMode === "add") {
+      if(process !== 100){
+        return true;
+      } else {
+        return false;
+      }
+    }   
   }
   
   return (
@@ -174,7 +176,7 @@ function SliderForm({
               type="date"
               placeholder="Başlangıç tarihini giriniz"
               defaultValue={hasVal(sliderData)}
-              onChange={(e) => sliderForm.setFieldValue('added_date', new Date(moment(e.target.value).format('LLL')))}
+              onChange={(e) => sliderForm.setFieldValue('addedDate', new Date(moment(e.target.value).format('LLL')))}
             />
             <TextInput required
               name="date"
@@ -182,7 +184,7 @@ function SliderForm({
               type="date"
               placeholder="Bitiş tarihini giriniz"
               defaultValue={hasValFinish(sliderData)}
-              onChange={(e) => sliderForm.setFieldValue('finish_date', new Date(moment(e.target.value).format('LLL')))}
+              onChange={(e) => sliderForm.setFieldValue('validationDate', new Date(moment(e.target.value).format('LLL')))}
             />
           </Group> 
           <div>

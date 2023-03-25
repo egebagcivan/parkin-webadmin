@@ -16,11 +16,11 @@ function SliderTable({
   getData,
 }) {
   const dispatch = useDispatch();
-  const slider = JSON.parse(localStorage.getItem("banners"));
+  const slider = JSON.parse(localStorage.getItem("banner"));
   const deleteSlider = async (id) => {
     try {
       dispatch(ShowLoading());
-      await deleteDoc(doc(fireDb, `banners/`, id));
+      await deleteDoc(doc(fireDb, `banner/`, id));
       dispatch(HideLoading());
       showNotification({
         title: "Slider başarıyla silindi",
@@ -49,15 +49,15 @@ function SliderTable({
   }
 
   const getRows = sliders.map((slider) => (
-    <tr key={slider.banner_url}>
-      <td>{moment(slider.added_date.toDate()).format('MMMM Do YYYY')}</td>
+    <tr key={slider.bannerURL}>
+      <td>{moment(slider.addedDate.toDate()).format('MMMM Do YYYY')}</td>
       <td><Image  
         radius="md"
         width={200}
         height={80}
         fit="contain" 
-        src={slider.banner_url}/></td>
-      <td>{moment(slider.finish_date.toDate()).format('MMMM Do YYYY')}</td>
+        src={slider.bannerURL}/></td>
+      <td>{moment(slider.validationDate.toDate()).format('MMMM Do YYYY')}</td>
       <td>{actPass(slider)}</td>
       <td>
         <Group>

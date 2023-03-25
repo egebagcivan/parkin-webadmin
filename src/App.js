@@ -5,9 +5,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import Spinner from "./components/Spinner";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import Slider from "./pages/Slider";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Customer from "./pages/Customer";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
   return (
@@ -24,6 +26,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/customer"
+            element={
+              <ProtectedRoute>
+                <Customer />
               </ProtectedRoute>
             }
           />
