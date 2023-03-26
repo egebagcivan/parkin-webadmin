@@ -45,12 +45,11 @@ function CustomerForm({
               const vendorQuery = query(vendorRef, where('vendorId', '==', historyData.vendorId));
               const vendorSnapshot = await getDocs(vendorQuery);
               const vendorData = vendorSnapshot.docs[0].data();
-              console.log(vendorData.imgList); // added console log statement
               const newData = { ...customerData, ...historyData, ...vendorData };
               setHistoryData((prevData) => [...prevData, newData].sort((a, b) => b.closedTime - a.closedTime));
             }
+            dispatch(HideLoading());
           });
-          dispatch(HideLoading());
         }).catch((error) => {
           console.error(error);
         });
@@ -88,14 +87,34 @@ function CustomerForm({
 
             <Group position="apart" mt="md" mb="xs">
               {data.parkName}
-              <Badge color="pink" variant="light">
-                {data.totalPrice} ₺
-              </Badge>
+              {data.status === "denied" ? (
+                <Badge color="pink" variant="light">
+                  DENIED
+                </Badge>
+              ) : data.status === "process" ? (
+                <Badge color="yellow" variant="light">
+                  PROCESS
+                </Badge>
+              ) : (
+                <Badge color="green" variant="light">
+                  {data.totalPrice} ₺
+                </Badge>
+              )}
             </Group>
 
-            <Text size="sm" color="dimmed">
-              Total Minutes: {data.totalMins}
-            </Text>
+            {data.status === "denied" ? (
+              <Text size="sm" color="dimmed">
+                Total Minutes:  DENIED
+              </Text>
+            ) : data.status === "process" ? (
+              <Text size="sm" color="dimmed">
+                Total Minutes: IN PROCESS
+              </Text>
+            ) : (
+              <Text size="sm" color="dimmed">
+                Total Minutes: {data.totalMins}
+              </Text>
+            )}
             <Text size="sm" color="dimmed">
               Status: {data.status}
             </Text>
