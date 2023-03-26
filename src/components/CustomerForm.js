@@ -34,25 +34,29 @@ function CustomerForm({
       const custSnapshot = await getDocs(custRef);
 
       custSnapshot.forEach((custDoc) => {
-        const dataa = custDoc.data();
+        const customerData = custDoc.data();
 
         const histRef = collection(fireDb, 'customer', custDoc.id, 'history');
         const histSnapshot = getDocs(histRef).then((snapshot) => {
-          snapshot.forEach((histDoc) => {
-            const data = histDoc.data();
-            //console.log(data); // log the requestId field
-            if (data.customerId == transactionData.uid) {
-              setHistoryData((prevData) => [...prevData, data].sort((a, b) => b.closedTime - a.closedTime));
+          snapshot.forEach(async (histDoc) => {
+            const historyData = histDoc.data();
+            if (historyData.customerId === transactionData.uid) {
+              const vendorRef = collection(fireDb, 'vendor');
+              const vendorQuery = query(vendorRef, where('vendorId', '==', historyData.vendorId));
+              const vendorSnapshot = await getDocs(vendorQuery);
+              const vendorData = vendorSnapshot.docs[0].data();
+              console.log(vendorData.imgList); // added console log statement
+              const newData = { ...customerData, ...historyData, ...vendorData };
+              setHistoryData((prevData) => [...prevData, newData].sort((a, b) => b.closedTime - a.closedTime));
             }
           });
+          dispatch(HideLoading());
         }).catch((error) => {
           console.error(error);
         });
       });
-      dispatch(HideLoading());
     } catch (error) {
       console.error(error);
-      dispatch(HideLoading());
     }
   };
 
@@ -73,10 +77,10 @@ function CustomerForm({
     <div>
       {historyData.map((data, index) => (
         <div key={index}>
-          <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card mb={10} shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/heryerpark-ms.appspot.com/o/vendorImage%2F0BGQoIHIRtFitJ4jq96B-1.png?alt=media&token=606857d0-81a3-45e7-bad8-c5a5f827db93"
+                src={data.imgList[0]}
                 height={160}
                 alt="Karşıyaka"
               />
@@ -98,10 +102,6 @@ function CustomerForm({
             <Text size="sm" color="dimmed">
               Date: {new Date(data.closedTime.seconds * 1000).toLocaleString()}
             </Text>
-
-            <Button variant="light" color="blue" fullWidth mt="md" radius="md">
-              Book classic tour now
-            </Button>
           </Card>
         </div>
       ))}

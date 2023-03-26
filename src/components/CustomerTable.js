@@ -64,12 +64,6 @@ function CustomerTable({
               setShowForm(true);
             }}
           ></i>
-          <i
-            className="ri-delete-bin-line"
-            onClick={() => {
-              deleteTransaction(transaction.id);
-            }}
-          ></i>
         </Group>
       </td>
     </tr>
