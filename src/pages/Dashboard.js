@@ -7,20 +7,13 @@ import { fireDb } from "../firebaseConfig";
 import { showNotification } from "@mantine/notifications";
 import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import TransactionTable from "../components/TransactionTable";
-import moment from "moment";
-import Analytics from "../components/Analytics";
 import { useNavigate } from "react-router-dom";
 import { RingProgress, Text, Progress } from "@mantine/core";
 
 
 function Dashboard() {
-  const navigate = useNavigate();
-
-  const [view, setView] = React.useState("table");
   const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
-  const [transactions, setTransactions] = React.useState([]);
   const [showForm, setShowForm] = React.useState(false);
   const [formMode, setFormMode] = React.useState("add");
   const [selectedTransaction, setSelectedTransaction] = React.useState({});
@@ -34,15 +27,49 @@ function Dashboard() {
   const [totalCouponsUsed, setTotalCouponsUsed] = React.useState(0);
   const [totalPrice, setTotalPrice] = React.useState(0);
   const [totalMin, setTotalMin] = React.useState(0);
+  const [totalVendors, setTotalVendors] = React.useState(0);
+  const [activeVendors, setActiveVendors] = React.useState(0);
+  const [passiveVendors, setPassiveVendors] = React.useState(0);
+  const [activeVendorsPercentage, setActiveVendorsPercentage] = React.useState(0);
+  const [passiveVendorsPercentage, setPassiveVendorsPercentage] = React.useState(0);
+
+  const getVendorsDashboard = async () => {
+    const vendorRef = collection(fireDb, 'vendor');
+    const vendorSnapshot = await getDocs(vendorRef);
+
+    let activeVendorCount = 0;
+    let PassiveVendorCount = 0;
+    let totalVendorCount = 0;
+
+    vendorSnapshot.forEach(async (vendorDoc) => {
+      const data = vendorDoc.data();
+      if (data.active === true) {
+        activeVendorCount += 1;
+        totalVendorCount += 1;
+      } else {
+        PassiveVendorCount += 1;
+        totalVendorCount += 1;
+      }
+    });
+    setTotalVendors(totalVendorCount);
+    setActiveVendors(activeVendorCount);
+    setPassiveVendors(PassiveVendorCount);
+    console.log(activeVendors, passiveVendors, totalVendors);
+
+    const activePercentage = (activeVendorCount / totalVendorCount) * 100;
+    const passivePercentage = (PassiveVendorCount / totalVendorCount) * 100;
+    setActiveVendorsPercentage(activePercentage);
+    setPassiveVendorsPercentage(passivePercentage);
+  }
 
   const getActiveStatusCount = async () => {
     const customersRef = collection(fireDb, 'customer');
     const customersSnapshot = await getDocs(customersRef);
 
-    let activeCount = 0; // add this line
-    let processCount = 0; // add this line
-    let deniedCount = 0; // add this line
-    let couponsUsed = 0; // add this line
+    let activeCount = 0;
+    let processCount = 0;
+    let deniedCount = 0;
+    let couponsUsed = 0;
     let totalPrice = 0;
     let totalMin = 0;
 
@@ -80,11 +107,11 @@ function Dashboard() {
 
       // Count active history documents and log to the console
       const activeHistoryCount = activeHistorySnapshot.size;
-      activeCount += activeHistoryCount; // add this line
+      activeCount += activeHistoryCount;
       const processHistoryCount = processHistorySnapshot.size;
-      processCount += processHistoryCount; // add this line
+      processCount += processHistoryCount;
       const deniedHistoryCount = deniedHistorySnapshot.size;
-      deniedCount += deniedHistoryCount; // add this line
+      deniedCount += deniedHistoryCount;
 
       let totalCount = activeCount + processCount + deniedCount;
       const totalCompletedPercentage = (activeCount / totalCount) * 100;
@@ -110,13 +137,14 @@ function Dashboard() {
       const couponUsedSnapshot = await getDocs(couponUsedQry);
 
       const totalCouponsUsed = couponUsedSnapshot.size;
-      couponsUsed += totalCouponsUsed; // add this line
+      couponsUsed += totalCouponsUsed;
       setTotalCouponsUsed(couponsUsed);
     });
   };
 
-  useEffect(() => { // call this function inside useEffect
+  useEffect(() => {
     getActiveStatusCount();
+    getVendorsDashboard();
   }, []);
 
   return (
@@ -141,12 +169,12 @@ function Dashboard() {
           <Group mt={20}>
             <div className="total-transactions">
               <h1 className="card-title">
-                Total Parks : {totalHistoryCount}
+                Total Process : {totalHistoryCount}
               </h1>
               <Divider my={20} />
-              <p>Completed Parks : {activeHistoryCount}</p>
-              <p>Active Parks : {processHistoryCount}</p>
-              <p>Denied Parks : {deniedHistoryCount}</p>
+              <p>Completed Process : {activeHistoryCount}</p>
+              <p>Active Process : {processHistoryCount}</p>
+              <p>Denied Process : {deniedHistoryCount}</p>
 
               <Group>
                 <RingProgress
@@ -196,6 +224,46 @@ function Dashboard() {
             </div>
 
             <div className="total-turnover">
+              <h1 className="card-title">
+                Total Parking Lots : {totalVendors}
+              </h1>
+              <Divider my={20} />
+              <p>Active Parking Lots : {activeVendors}</p>
+              <p>Passive Parking Lots : {passiveVendors}</p>
+
+              <Group>
+                <RingProgress
+                  label={
+                    <Text size="xs" align="center">
+                      Active {activeVendorsPercentage.toFixed(2)}%
+                    </Text>
+                  }
+                  roundCaps
+                  sections={[
+                    {
+                      value: 100 - activeVendorsPercentage,
+                    },
+                    { value: activeVendorsPercentage, color: "teal" },
+                  ]}
+                />
+                <RingProgress
+                  label={
+                    <Text size="xs" align="center">
+                      Passive {passiveVendorsPercentage.toFixed(2)}%
+                    </Text>
+                  }
+                  roundCaps
+                  sections={[
+                    {
+                      value: 100 - passiveVendorsPercentage,
+                    },
+                    { value: passiveVendorsPercentage, color: "red" },
+                  ]}
+                />
+              </Group>
+            </div>
+
+            <div className="total-third">
               <h1 className="card-title">Total Coupons Used : {totalCouponsUsed}</h1>
               <Divider my={20} />
               <h1 className="card-title">Total Money Charged : {totalPrice}₺</h1>

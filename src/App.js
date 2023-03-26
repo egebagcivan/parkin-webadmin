@@ -25,15 +25,15 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <Home />
+                <Dashboard />
               </ProtectedRoute>
             }
           />
           <Route
-            path="/dashboard"
+            path="/vendor"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Home />
               </ProtectedRoute>
             }
           />

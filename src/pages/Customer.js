@@ -38,6 +38,7 @@ function Customer() {
         id: doc.id,
         ...doc.data(),
       }));
+      console.log(data);
 
       setTransactions(data);
 
@@ -109,5 +110,6 @@ function Customer() {
     </Box>
   );
 }
+
 
 export default Customer;

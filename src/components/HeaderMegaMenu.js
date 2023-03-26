@@ -161,10 +161,10 @@ export function HeaderMegaMenu() {
           </Text>
 
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-            <a href="/dashboard" className={classes.link}>
-              DashBoard
-            </a>
             <a href="/" className={classes.link}>
+              Dashboard
+            </a>
+            <a href="/vendor" className={classes.link}>
               Otoparklar
             </a>
             <a href="/customer" className={classes.link}>
@@ -201,7 +201,7 @@ export function HeaderMegaMenu() {
         <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
           <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 
-          <a href="/" className={classes.link}>
+          <a href="/vendor" className={classes.link}>
             Otoparklar
           </a>
           <a href="/customer" className={classes.link}>

@@ -36,6 +36,7 @@ function CustomerTable({
     }
   };
 
+
   //Aktif Pasif Badge
   const activeBadge = <Badge variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }}>Onaylı</Badge>
   const passiveBadge = <Badge variant="gradient" gradient={{ from: 'orange', to: 'red' }}>Onaylı değil</Badge>
@@ -48,7 +49,7 @@ function CustomerTable({
     }
   }
   const getRows = transactions.map((transaction) => (
-    <tr key={transaction.nameSurname}>
+    <tr key={transaction.vendorId}>
       <td>{transaction.nameSurname}</td>
       <td>{transaction.email}</td>
       <td>{transaction.phone}</td>
