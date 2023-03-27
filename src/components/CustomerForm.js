@@ -86,8 +86,8 @@ function CustomerForm({
   console.log(transactionData.nameSurname);
   return (
     <div>
-      <Grid mb={5}>
-        <Grid.Col span={6}><Avatar src={transactionData.customerImage} alt="it's me" /></Grid.Col>
+      <Grid align="center" mb={5}>
+        <Grid.Col span="content"><Avatar src={transactionData.customerImage} alt="it's me" /></Grid.Col>
         <Grid.Col span={6}>{transactionData.nameSurname}</Grid.Col>
       </Grid>
       {currentItems.map((data, index) => (

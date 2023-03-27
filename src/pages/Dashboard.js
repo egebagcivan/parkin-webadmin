@@ -8,7 +8,7 @@ import { showNotification } from "@mantine/notifications";
 import { HideLoading, ShowLoading } from "../redux/alertsSlice";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { RingProgress, Text, Progress } from "@mantine/core";
+import { RingProgress, Text, Progress, Grid } from "@mantine/core";
 
 
 function Dashboard() {
@@ -164,112 +164,107 @@ function Dashboard() {
         >
           Dashboard - Analytics
         </Text>
+        <Grid mb={5}>
+          <Grid.Col span={4}><div className="total-transactions">
+            <h1 className="card-title">
+              Total Process : {totalHistoryCount}
+            </h1>
+            <Divider my={20} />
+            <p>Completed Process : {activeHistoryCount}</p>
+            <p>Active Process : {processHistoryCount}</p>
+            <p>Denied Process : {deniedHistoryCount}</p>
 
-        <div>
-          <Group mt={20}>
-            <div className="total-transactions">
-              <h1 className="card-title">
-                Total Process : {totalHistoryCount}
-              </h1>
-              <Divider my={20} />
-              <p>Completed Process : {activeHistoryCount}</p>
-              <p>Active Process : {processHistoryCount}</p>
-              <p>Denied Process : {deniedHistoryCount}</p>
+            <Group>
+              <RingProgress
+                label={
+                  <Text size="xs" align="center">
+                    Completed {totalCompletedPercentage.toFixed(2)}%
+                  </Text>
+                }
+                roundCaps
+                sections={[
+                  {
+                    value: 100 - totalCompletedPercentage,
+                  },
+                  { value: totalCompletedPercentage, color: "teal" },
+                ]}
+              />
 
-              <Group>
-                <RingProgress
-                  label={
-                    <Text size="xs" align="center">
-                      Completed {totalCompletedPercentage.toFixed(2)}%
-                    </Text>
-                  }
-                  roundCaps
-                  sections={[
-                    {
-                      value: 100 - totalCompletedPercentage,
-                    },
-                    { value: totalCompletedPercentage, color: "teal" },
-                  ]}
-                />
+              <RingProgress
+                label={
+                  <Text size="xs" align="center">
+                    Active {totalProcessPercentage.toFixed(2)}%
+                  </Text>
+                }
+                roundCaps
+                sections={[
+                  {
+                    value: 100 - totalProcessPercentage,
+                  },
+                  { value: totalProcessPercentage, color: "yellow" },
+                ]}
+              />
+              <RingProgress
+                label={
+                  <Text size="xs" align="center">
+                    Denied {totalDeniedPercentage.toFixed(2)}%
+                  </Text>
+                }
+                roundCaps
+                sections={[
+                  {
+                    value: 100 - totalDeniedPercentage,
+                  },
+                  { value: totalDeniedPercentage, color: "red" },
+                ]}
+              />
+            </Group>
+          </div></Grid.Col>
+          <Grid.Col span={4}><div className="total-turnover">
+            <h1 className="card-title">
+              Total Parking Lots : {totalVendors}
+            </h1>
+            <Divider my={20} />
+            <p>Active Parking Lots : {activeVendors}</p>
+            <p>Passive Parking Lots : {passiveVendors}</p>
 
-                <RingProgress
-                  label={
-                    <Text size="xs" align="center">
-                      Active {totalProcessPercentage.toFixed(2)}%
-                    </Text>
-                  }
-                  roundCaps
-                  sections={[
-                    {
-                      value: 100 - totalProcessPercentage,
-                    },
-                    { value: totalProcessPercentage, color: "yellow" },
-                  ]}
-                />
-                <RingProgress
-                  label={
-                    <Text size="xs" align="center">
-                      Denied {totalDeniedPercentage.toFixed(2)}%
-                    </Text>
-                  }
-                  roundCaps
-                  sections={[
-                    {
-                      value: 100 - totalDeniedPercentage,
-                    },
-                    { value: totalDeniedPercentage, color: "red" },
-                  ]}
-                />
-              </Group>
-            </div>
-
-            <div className="total-turnover">
-              <h1 className="card-title">
-                Total Parking Lots : {totalVendors}
-              </h1>
-              <Divider my={20} />
-              <p>Active Parking Lots : {activeVendors}</p>
-              <p>Passive Parking Lots : {passiveVendors}</p>
-
-              <Group>
-                <RingProgress
-                  label={
-                    <Text size="xs" align="center">
-                      Active {activeVendorsPercentage.toFixed(2)}%
-                    </Text>
-                  }
-                  roundCaps
-                  sections={[
-                    {
-                      value: 100 - activeVendorsPercentage,
-                    },
-                    { value: activeVendorsPercentage, color: "teal" },
-                  ]}
-                />
-                <RingProgress
-                  label={
-                    <Text size="xs" align="center">
-                      Passive {passiveVendorsPercentage.toFixed(2)}%
-                    </Text>
-                  }
-                  roundCaps
-                  sections={[
-                    {
-                      value: 100 - passiveVendorsPercentage,
-                    },
-                    { value: passiveVendorsPercentage, color: "red" },
-                  ]}
-                />
-              </Group>
-            </div>
-
-            <div className="total-third">
-              <h1 className="card-title">Total Money Charged : {totalPrice}₺</h1>
-              <Divider my={20} />
-              <h1 className="card-title">Total Parking Time : {totalMin} Minutes</h1>
-            </div>
-          </Group>
-        </div>
+            <Group>
+              <RingProgress
+                label={
+                  <Text size="xs" align="center">
+                    Active {activeVendorsPercentage.toFixed(2)}%
+                  </Text>
+                }
+                roundCaps
+                sections={[
+                  {
+                    value: 100 - activeVendorsPercentage,
+                  },
+                  { value: activeVendorsPercentage, color: "teal" },
+                ]}
+              />
+              <RingProgress
+                label={
+                  <Text size="xs" align="center">
+                    Passive {passiveVendorsPercentage.toFixed(2)}%
+                  </Text>
+                }
+                roundCaps
+                sections={[
+                  {
+                    value: 100 - passiveVendorsPercentage,
+                  },
+                  { value: passiveVendorsPercentage, color: "red" },
+                ]}
+              />
+            </Group>
+          </div></Grid.Col>
+          <Grid.Col span={4}><div className="total-third">
+            <h1 className="card-title">Total Money Charged : {totalPrice}₺</h1>
+            <Divider my={20} />
+            <h1 className="card-title">Total Parking Time : {totalMin} Minutes</h1>
+          </div></Grid.Col>
+        </Grid>
       </div>
 
 
