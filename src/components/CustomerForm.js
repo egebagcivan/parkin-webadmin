@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 
 import { useForm } from "@mantine/form";
-import { Select, Stack, TextInput, Button, Group, Input, PasswordInput, Card, Image, Text, Badge, Pagination } from "@mantine/core";
+import { Select, Stack, TextInput, Button, Group, Input, PasswordInput, Card, Image, Text, Badge, Pagination, Avatar, Grid } from "@mantine/core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fireDb } from "../firebaseConfig";
@@ -21,7 +21,8 @@ function CustomerForm({
     initialValues: {
       nameSurname: "",
       email: "",
-      uid: ""
+      uid: "",
+      customerImage: ""
     },
   });
 
@@ -67,22 +68,28 @@ function CustomerForm({
     if (formMode === "edit") {
       trasactionForm.setValues({
         nameSurname: transactionData.nameSurname,
-        email: transactionData.email
+        email: transactionData.email,
+        customerImage: transactionData.customerImage,
       });
     }
   }, [transactionData]);
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 3;
   const totalPages = Math.ceil(historyData.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
   const currentItems = historyData.slice(startIndex, endIndex);
+  console.log(transactionData.nameSurname);
   return (
     <div>
+      <Grid mb={5}>
+        <Grid.Col span={6}><Avatar src={transactionData.customerImage} alt="it's me" /></Grid.Col>
+        <Grid.Col span={6}>{transactionData.nameSurname}</Grid.Col>
+      </Grid>
       {currentItems.map((data, index) => (
         <div key={index}>
           <Card mb={10} shadow="sm" padding="lg" radius="md" withBorder>

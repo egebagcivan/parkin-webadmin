@@ -264,8 +264,6 @@ function Dashboard() {
             </div>
 
             <div className="total-third">
-              <h1 className="card-title">Total Coupons Used : {totalCouponsUsed}</h1>
-              <Divider my={20} />
               <h1 className="card-title">Total Money Charged : {totalPrice}₺</h1>
               <Divider my={20} />
               <h1 className="card-title">Total Parking Time : {totalMin} Minutes</h1>

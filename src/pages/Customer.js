@@ -93,7 +93,7 @@ function Customer() {
 
       <Modal
         size="lg"
-        title={formMode === "add" ? "Vendor Ekle" : "Park Geçmişi"}
+        title={formMode === "add" ? "Vendor Ekle" : "Parking History"}
         opened={showForm}
         onClose={() => setShowForm(false)}
         centered
