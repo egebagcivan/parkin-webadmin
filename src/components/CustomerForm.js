@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAuth, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
 
 import { useForm } from "@mantine/form";
-import { Select, Stack, TextInput, Button, Group, Input, PasswordInput, Card, Image, Text, Badge } from "@mantine/core";
+import { Select, Stack, TextInput, Button, Group, Input, PasswordInput, Card, Image, Text, Badge, Pagination } from "@mantine/core";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { fireDb } from "../firebaseConfig";
@@ -72,9 +72,18 @@ function CustomerForm({
     }
   }, [transactionData]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(historyData.length / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentItems = historyData.slice(startIndex, endIndex);
   return (
     <div>
-      {historyData.map((data, index) => (
+      {currentItems.map((data, index) => (
         <div key={index}>
           <Card mb={10} shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
@@ -124,8 +133,17 @@ function CustomerForm({
           </Card>
         </div>
       ))}
+
+      {/* render pagination buttons */}
+      <Pagination
+        total={totalPages}
+        current={currentPage}
+        onChange={(page) => setCurrentPage(page)}
+      />
     </div>
   );
+
+
 
 }
 
